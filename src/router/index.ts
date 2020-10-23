@@ -22,31 +22,6 @@ const routes: Array<RouteRecordRaw> = [
       errorLink: route.params.catchAll
     })
   },
-  // {
-  //   path: '/list',
-  //   component: () => import('@/views/List.vue'),
-  //   children: [
-  //     // {
-  //     //   path: '/',
-  //     //   redirect: 'index'
-  //     // },
-  //     // {
-  //     //   // 用户列表
-  //     //   path: 'index',
-  //     //   component: () => import('@/views/List.vue')
-  //     // },
-  //     {
-  //       // 用户详情
-  //       path: 'details/:id',
-  //       component: () => import('@/views/list/Details.vue'),
-  //       props: true
-  //     }
-  //   ],
-  //   meta: {
-  //     title: '用户管理',
-  //     // requireAuth: true
-  //   }
-  // },
   {
     path: '/sign_in',
     component: () => import('@/views/SignIn.vue'),
@@ -68,13 +43,6 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '个人中心',
       requireAuth: true
-    }
-  },
-  {
-    path: '/test',
-    component: () => import('@/views/Test.vue'),
-    meta: {
-      title: '测试页'
     }
   },
   {
@@ -134,7 +102,6 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/sign_in',
         query: { redirect: to.fullPath },
-        // props:{}
       })
     }
   }

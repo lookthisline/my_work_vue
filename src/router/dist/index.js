@@ -23,31 +23,6 @@ var routes = [
             errorLink: route.params.catchAll
         }); }
     },
-    // {
-    //   path: '/list',
-    //   component: () => import('@/views/List.vue'),
-    //   children: [
-    //     // {
-    //     //   path: '/',
-    //     //   redirect: 'index'
-    //     // },
-    //     // {
-    //     //   // 用户列表
-    //     //   path: 'index',
-    //     //   component: () => import('@/views/List.vue')
-    //     // },
-    //     {
-    //       // 用户详情
-    //       path: 'details/:id',
-    //       component: () => import('@/views/list/Details.vue'),
-    //       props: true
-    //     }
-    //   ],
-    //   meta: {
-    //     title: '用户管理',
-    //     // requireAuth: true
-    //   }
-    // },
     {
         path: '/sign_in',
         component: function () { return Promise.resolve().then(function () { return require('@/views/SignIn.vue'); }); },
@@ -69,13 +44,6 @@ var routes = [
         meta: {
             title: '个人中心',
             requireAuth: true
-        }
-    },
-    {
-        path: '/test',
-        component: function () { return Promise.resolve().then(function () { return require('@/views/Test.vue'); }); },
-        meta: {
-            title: '测试页'
         }
     },
     {
