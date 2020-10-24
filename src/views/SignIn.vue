@@ -33,7 +33,7 @@
         <td class="td_text_2">
           <input
             type="text"
-            v-model="formData.captcha"
+            v-model="formData.captcha_code"
             placeholder="请输入验证码"
             required
           />
@@ -57,7 +57,8 @@ export default {
       formData: {
         nickname: "",
         passwd: "",
-        captcha: "",
+        captcha_code: "",
+        captcha_id: "",
       },
       captcha_pic: undefined,
     };
@@ -67,7 +68,8 @@ export default {
     this.$request
       .get("/index/captcha/getCaptcha")
       .then((response) => {
-        this.captcha_pic = response.data;
+        this.captcha_pic = response.data.picture;
+        this.formData.captcha_id = response.data.captcha_id;
       })
       .catch((error) => {
         alert(error.message);
@@ -79,7 +81,8 @@ export default {
       this.$request
         .get("/index/captcha/getCaptcha")
         .then((response) => {
-          this.captcha_pic = response.data;
+          this.captcha_pic = response.data.picture;
+          this.formData.captcha_id = response.data.captcha_id;
         })
         .catch((error) => {
           alert("请求验证码失败");

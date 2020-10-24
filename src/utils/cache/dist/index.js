@@ -10,7 +10,7 @@ var Cache = /** @class */ (function () {
                 return result;
             }
             try {
-                // 尝试把所有取出的值都当json字符串转换
+                // 尝试把所有取出的值都当 json 字符串转换
                 JSON.parse(result);
             }
             catch (e) {
@@ -24,12 +24,8 @@ var Cache = /** @class */ (function () {
             }
             return localStorage.setItem(key, value);
         };
-        this.del = function (key) {
-            localStorage.removeItem(key);
-        };
-        this.clear = function () {
-            localStorage.clear();
-        };
+        this.del = function (key) { localStorage.removeItem(key); };
+        this.clear = function () { localStorage.clear(); };
     }
     return Cache;
 }());

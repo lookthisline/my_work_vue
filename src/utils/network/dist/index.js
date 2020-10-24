@@ -1,6 +1,5 @@
 "use strict";
 exports.__esModule = true;
-exports.instance = void 0;
 var store_1 = require("@/store");
 var axios_1 = require("axios");
 // 从 VueX 获取配置
@@ -8,16 +7,9 @@ var axiosEnv = store_1["default"].getters.getAxiosEnv(process.env.NODE_ENV);
 // 错误方法
 var errorFunc = function (msg) { console.error(msg); };
 // axios 实例
-exports.instance = axios_1["default"].create(axiosEnv);
+var instance = axios_1["default"].create(axiosEnv);
 // 定义 axios 请求（request）拦截器
-exports.instance.interceptors.request.use(function (config) {
-    // 设置每次请求都携带 token
-    // config.headers.token = ''
-    // config.headers.Authorization = `Basic ${new Buffer(token).toString('base64')}`
-    // config.headers = {
-    //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-    //   'token': localStorage.getItem('token')
-    // }
+instance.interceptors.request.use(function (config) {
     // 在 get 请求前拼接参数
     if (config.method === 'get') {
         config.transformRequest = [function (data) {
@@ -51,7 +43,7 @@ exports.instance.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 // 定义 axios 响应（response）拦截器
-exports.instance.interceptors.response.use(function (response) {
+instance.interceptors.response.use(function (response) {
     // 定义获取到数据响应时如何处理
     if (!response.data.status) {
         // 后端返回错误信息
@@ -61,7 +53,6 @@ exports.instance.interceptors.response.use(function (response) {
 }, function (error) {
     // 服务器未启动，无法得到任何响应
     if (error.response === undefined) {
-        // TODO: 测试errorFunc是否有效
         errorFunc(error.message);
         return Promise.reject(error);
     }
@@ -70,8 +61,7 @@ exports.instance.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 exports["default"] = {
-    instance: exports.instance,
     install: function (Vue) {
-        Vue.config.globalProperties.$request = exports.instance;
+        Vue.config.globalProperties.$request = instance;
     }
 };

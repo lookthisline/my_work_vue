@@ -1,6 +1,6 @@
 import store from '@/store'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { isset } from "@/utils/common/function"
+
 // 从 VueX 获取配置
 const axiosEnv = store.getters.getAxiosEnv(process.env.NODE_ENV)
 
@@ -8,18 +8,11 @@ const axiosEnv = store.getters.getAxiosEnv(process.env.NODE_ENV)
 const errorFunc = (msg: string) => { console.error(msg) }
 
 // axios 实例
-export const instance = axios.create(axiosEnv)
+const instance = axios.create(axiosEnv)
 
 // 定义 axios 请求（request）拦截器
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // 设置每次请求都携带 token
-    // config.headers.token = ''
-    // config.headers.Authorization = `Basic ${new Buffer(token).toString('base64')}`
-    // config.headers = {
-    //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-    //   'token': localStorage.getItem('token')
-    // }
     // 在 get 请求前拼接参数
     if (config.method === 'get') {
       config.transformRequest = [(data) => {
@@ -68,7 +61,6 @@ instance.interceptors.response.use(
   error => {
     // 服务器未启动，无法得到任何响应
     if (error.response === undefined) {
-      // TODO: 测试errorFunc是否有效
       errorFunc(error.message)
       return Promise.reject(error)
     }
@@ -79,8 +71,7 @@ instance.interceptors.response.use(
 )
 
 export default {
-  instance,
-  install: (Vue: any) => {
+  install: (Vue: any): void => {
     Vue.config.globalProperties.$request = instance
   }
 }
