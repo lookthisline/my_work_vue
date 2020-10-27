@@ -44,11 +44,10 @@ export default {
   beforeCreate() {
     // 请求用户信息初始化页面
     this.$request
-      .post(
-        "/index/accounts/details",
-        { id: this.id },
-        { headers: { Authorization: this.$cache.get("token") } }
-      )
+      .get("user/" + this.id, {
+        params: { id: this.id },
+        headers: { Authorization: this.$cache.get("token") },
+      })
       .then((response) => {
         this.user = response.data;
         console.log(response);

@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import qs from "qs";
 export default {
   name: "modify-user",
   data: () => {
@@ -71,14 +70,14 @@ export default {
     // 提交表单，修改用户信息
     submitForm() {
       this.$request
-        .post("/index/accounts/modify", this.user, {
+        .put("user/" + this.id, this.user, {
           headers: { Authorization: this.$cache.get("token") },
         })
         .then((response) => {
           alert(response.message);
           setTimeout(() => {
             // 跳转至个人信息页
-            this.$router.push("/profile");
+            this.$router.replace("/profile");
           }, 3000);
         })
         .catch((error) => {
@@ -89,11 +88,10 @@ export default {
   beforeCreate() {
     // 请求用户信息初始化页面
     this.$request
-      .post(
-        "/index/accounts/details",
-        { id: this.id },
-        { headers: { Authorization: this.$cache.get("token") } }
-      )
+      .get("user/" + this.id, {
+        params: { id: this.id },
+        headers: { Authorization: this.$cache.get("token") },
+      })
       .then((response) => {
         this.user = response.data;
       })

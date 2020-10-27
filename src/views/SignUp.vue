@@ -177,13 +177,13 @@ export default {
         return;
       }
       this.$request
-        .post("/index/accounts/signup", this.formData, { 
+        .post("signUp", this.formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((response) => {
           alert(response.message);
           setTimeout(() => {
-            this.$router.push('/sign_in')
+            this.$router.push("/sign_in");
           }, 3);
         })
         .catch((response) => {

@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { is_number, isset, in_array } from "@/utils/common/function";
 export default {
   name: "user-list",
@@ -75,11 +76,10 @@ export default {
     // 获取指定页数据
     getList(page) {
       this.$request
-        .post(
-          "/index/accounts/list",
-          { page: page },
-          { headers: { Authorization: this.$cache.get("token") } }
-        )
+        .get("list/user", {
+          params: { page: page },
+          headers: { Authorization: this.$cache.get("token") },
+        })
         .then((response) => {
           this.listData = response.data;
         })
@@ -90,8 +90,8 @@ export default {
     // 通过审核
     audit(id) {
       this.$request
-        .post(
-          "/index/accounts/audit",
+        .put(
+          "audit/user/" + id,
           { id: id },
           { headers: { Authorization: this.$cache.get("token") } }
         )
@@ -106,13 +106,17 @@ export default {
     },
     // 删除用户
     del(id) {
-      this.$request
-        .post(
-          "/index/accounts/delete",
-          { id: id },
-          { headers: { Authorization: this.$cache.get("token") } }
-        )
+      this.$request({
+        method: "delete",
+        url: "user/" + id,
+        headers: {
+          Authorization: this.$cache.get("token"),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: { id: id },
+      })
         .then((response) => {
+          console.log(response);
           alert(response.message);
         })
         .catch((error) => {
@@ -141,7 +145,20 @@ export default {
   beforeCreate() {
     // 初始化用户列表
     this.$request
-      .post("/index/accounts/list", null, {
+      .get("list/user", {
+        headers: { Authorization: this.$cache.get("token") },
+      })
+      .then((response) => {
+        this.listData = response.data;
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  },
+  activated() {
+    // 被 keep-alive 缓存的组件激活时调用；重新获取用户列表
+    this.$request
+      .get("list/user", {
         headers: { Authorization: this.$cache.get("token") },
       })
       .then((response) => {

@@ -66,7 +66,7 @@ export default {
   beforeCreate() {
     // 获取验证码图片
     this.$request
-      .get("/index/captcha/getCaptcha")
+      .get("captcha")
       .then((response) => {
         this.captcha_pic = response.data.picture;
         this.formData.captcha_id = response.data.captcha_id;
@@ -79,7 +79,7 @@ export default {
     // 获取验证码图片
     getCaptcha() {
       this.$request
-        .get("/index/captcha/getCaptcha")
+        .get("captcha")
         .then((response) => {
           this.captcha_pic = response.data.picture;
           this.formData.captcha_id = response.data.captcha_id;
@@ -88,12 +88,11 @@ export default {
           alert("请求验证码失败");
         });
     },
-    // 提交表单
+    // 提交表单 登录
     submitForm() {
       this.$request
-        .post("/index/accounts/signin", this.formData)
+        .post("login", this.formData)
         .then((response) => {
-          console.log(response);
           // 存储 token
           this.$cache.set("user", response.data);
           this.$cache.set("token", response.data.token);

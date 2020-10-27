@@ -1,5 +1,7 @@
 import store from '@/store'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { is_object } from '@/utils/common/function'
+import qs from 'qs'
 
 // 从 VueX 获取配置
 const axiosEnv = store.getters.getAxiosEnv(process.env.NODE_ENV)
@@ -13,6 +15,20 @@ const instance = axios.create(axiosEnv)
 // 定义 axios 请求（request）拦截器
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+
+    // 在 delete 请求前拼接参数
+    if (config.method === 'delete') {
+      config.transformRequest = [(data) => {
+        if (!data) {
+          return
+        }
+        if (is_object(data)) {
+          return qs.stringify(data)
+        }
+        return data;
+      }]
+    }
+
     // 在 get 请求前拼接参数
     if (config.method === 'get') {
       config.transformRequest = [(data) => {
@@ -28,6 +44,7 @@ instance.interceptors.request.use(
         return params;
       }]
     }
+
     // 在 post 请求前对传参进行格式转换
     if (config.method === 'post') {
       config.transformRequest = [(data) => {

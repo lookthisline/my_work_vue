@@ -1,7 +1,9 @@
 <template>
   <p>Hello {{ user.nickname }}</p>
   <div v-if="user.user_level < 3">
-    <user-list></user-list>
+    <keep-alive>
+      <user-list></user-list>
+    </keep-alive>
   </div>
 </template>
 
@@ -18,5 +20,6 @@ export default {
   mounted() {
     this.user = this.$cache.get("user");
   },
+
 };
 </script>
