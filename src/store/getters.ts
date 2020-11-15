@@ -1,13 +1,22 @@
+interface AxiosEnv {
+  axiosEnv: {
+    [k: string]: {
+      baseURL: string;
+      timeout: number;
+      withCredentials: boolean;
+    };
+  };
+}
+
 export default {
   /**
    * 获取 axios 配置
-   * @param {object} state
-   * @param {string} type
-   * @return {object}
+   * @param {AxiosEnv} state
+   * @return {Object} data
    */
-  getAxiosEnv: (state: any): object => {
+  getAxiosEnv: <T extends AxiosEnv>(state: T): object => {
     return (type: string) => {
-      let data = state.axiosEnv[type] ? state.axiosEnv[type] : state.axiosEnv.default
+      const data = type in state.axiosEnv ? state.axiosEnv[type] : state.axiosEnv.default
       if (!data) {
         return {
           baseURL: 'https://localhost:80',

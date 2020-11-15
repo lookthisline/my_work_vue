@@ -1,7 +1,8 @@
 import store from '@/store'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { is_object } from '@/utils/common/function'
+import { isObject } from '@/utils/common/function'
 import qs from 'qs'
+import { App } from 'vue'
 
 // 从 VueX 获取配置
 const axiosEnv = store.getters.getAxiosEnv(process.env.NODE_ENV)
@@ -15,17 +16,16 @@ const instance = axios.create(axiosEnv)
 // 定义 axios 请求（request）拦截器
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-
     // 在 delete 请求前拼接参数
     if (config.method === 'delete') {
       config.transformRequest = [(data) => {
         if (!data) {
           return
         }
-        if (is_object(data)) {
+        if (isObject(data)) {
           return qs.stringify(data)
         }
-        return data;
+        return data
       }]
     }
 
@@ -35,13 +35,14 @@ instance.interceptors.request.use(
         if (!data) {
           return
         }
-        let params = '';
-        for (let k in data) {
-          if (data.hasOwnProperty(k) === true) {
-            params += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&';
+        let params = ''
+        for (const k in data) {
+          // if (data.hasOwnProperty(k) === true) {
+          if (Object.prototype.hasOwnProperty.call(data, k) === true) {
+            params += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
           }
         }
-        return params;
+        return params
       }]
     }
 
@@ -51,11 +52,11 @@ instance.interceptors.request.use(
         if (!data) {
           return
         }
-        let formData = new FormData()
+        const formData = new FormData()
         Object.keys(data).forEach(key => {
           formData.append(key, data[key])
         })
-        return formData;
+        return formData
       }]
     }
     return config
@@ -71,7 +72,7 @@ instance.interceptors.response.use(
     // 定义获取到数据响应时如何处理
     if (!response.data.status) {
       // 后端返回错误信息
-      return Promise.reject(response.data);
+      return Promise.reject(response.data)
     }
     return response.data
   },
@@ -81,14 +82,14 @@ instance.interceptors.response.use(
       errorFunc(error.message)
       return Promise.reject(error)
     }
-    const http_code = error.response.status
-    errorFunc('http response code: ' + http_code)
+    const httpCode = error.response.status
+    errorFunc('http response code: ' + httpCode)
     return Promise.reject(error)
   }
 )
 
 export default {
-  install: (Vue: any): void => {
+  install: (Vue: App): void => {
     Vue.config.globalProperties.$request = instance
   }
 }
