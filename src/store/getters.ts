@@ -12,9 +12,9 @@ export default {
   /**
    * 获取 axios 配置
    * @param {AxiosEnv} state
-   * @return {Object} data
+   * @return {Object|null} data
    */
-  getAxiosEnv: <T extends AxiosEnv>(state: T): object => {
+  getAxiosEnv: <T extends AxiosEnv>(state: T): object | null => {
     return (type: string) => {
       const data = type in state.axiosEnv ? state.axiosEnv[type] : state.axiosEnv.default
       if (!data) {

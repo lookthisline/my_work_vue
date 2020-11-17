@@ -7,29 +7,22 @@ import { App } from 'vue'
 // 从 VueX 获取配置
 const axiosEnv = store.getters.getAxiosEnv(process.env.NODE_ENV)
 
+const config = {
+  baseURL: 'http://localhost/',
+  timeout: 1500,
+  withCredentials: false
+};
+
 // 错误方法
 const errorFunc = (msg: string) => { console.error(msg) }
 
 // axios 实例
-const instance = axios.create(axiosEnv)
+const instance = axios.create({ ...config, ...axiosEnv })
 
 // 定义 axios 请求（request）拦截器
 instance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // 在 delete 请求前拼接参数
-    if (config.method === 'delete') {
-      config.transformRequest = [(data) => {
-        if (!data) {
-          return
-        }
-        if (isObject(data)) {
-          return qs.stringify(data)
-        }
-        return data
-      }]
-    }
-
-    // 在 get 请求前拼接参数
+    // NOTE: 在 get 请求前对参数进行格式转换
     if (config.method === 'get') {
       config.transformRequest = [(data) => {
         if (!data) {
@@ -45,8 +38,7 @@ instance.interceptors.request.use(
         return params
       }]
     }
-
-    // 在 post 请求前对传参进行格式转换
+    // NOTE: 在 post 请求前对传参进行格式转换
     if (config.method === 'post') {
       config.transformRequest = [(data) => {
         if (!data) {
@@ -57,6 +49,18 @@ instance.interceptors.request.use(
           formData.append(key, data[key])
         })
         return formData
+      }]
+    }
+    // NOTE: 在 delete 请求前对传参进行格式转换
+    if (config.method === 'delete') {
+      config.transformRequest = [(data) => {
+        if (!data) {
+          return
+        }
+        if (isObject(data)) {
+          return qs.stringify(data)
+        }
+        return data
       }]
     }
     return config
@@ -91,5 +95,6 @@ instance.interceptors.response.use(
 export default {
   install: (Vue: App): void => {
     Vue.config.globalProperties.$request = instance
-  }
+  },
+  instance
 }
