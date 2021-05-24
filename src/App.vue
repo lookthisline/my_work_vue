@@ -1,23 +1,24 @@
 <template>
   <div id="app">
-    <tabbar></tabbar>
-    <router-view v-slot="{ Component }">
-      <keep-alive>
-        <component :is="Component" />
-      </keep-alive>
-    </router-view>
+    <tabbar />
+    <div class="body">
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" />
+        </keep-alive>
+      </router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import tabbar from "@/components/tabbar/index.vue";
+// 引入首页顶部导航组件
+import tabbar from '@/components/tabbar.vue';
 export default {
   components: { tabbar }
 };
 </script>
 
-<style>
-#app {
-  text-align: center;
-}
+<style lang="scss">
+@import "@/assets/styles/body.scss";
 </style>

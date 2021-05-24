@@ -1,0 +1,17 @@
+table {
+  margin: auto;
+}
+input {
+  width: 100%;
+  border: solid black;
+  border-width: 0px 0px 1px;
+}
+input:focus {
+  outline: none;
+}
+.td_text_1 {
+  text-align: right;
+}
+.td_text_2 {
+  text-align: left;
+}

@@ -1,25 +1,26 @@
 <template>
-  <p>Hello {{ user.nickname }}</p>
-  <div v-if="user.user_level < 3">
-    <keep-alive>
-      <user-list></user-list>
-    </keep-alive>
+  <div>
+    <p>Hello {{ user.nickname }}</p>
+    <div v-if="user.user_level < 3">
+      <keep-alive>
+        <user-list />
+      </keep-alive>
+    </div>
   </div>
 </template>
 
 <script>
-import list from "@/components/profile/list.vue";
+import list from '@/components/profile/list.vue';
 export default {
-  name: "profile",
-  components: { "user-list": list },
+  name: 'Profile',
+  components: { 'user-list': list },
   data() {
     return {
-      user: {},
+      user: {}
     };
   },
   mounted() {
-    this.user = this.$cache.get("user");
-  },
-
+    this.user = this.$cache.get('user');
+  }
 };
 </script>

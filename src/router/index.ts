@@ -1,6 +1,6 @@
 // vue 3 router <https://github.com/vuejs/vue-router-next>
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import { cache } from '@/utils/cache'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { cache } from '@/utils/cache';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Page Not Found'
     },
-    props: (route) => ({
+    props: route => ({
       errorLink: route.params.catchAll
     })
   },
@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
       title: '修改用户信息',
       requireAuth: true
     },
-    props: (route) => ({
+    props: route => ({
       id: route.params.id
     })
   },
@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
       title: '用户信息详情',
       requireAuth: true
     },
-    props: (route) => ({
+    props: route => ({
       id: route.params.id
     })
   },
@@ -76,7 +76,7 @@ const routes: Array<RouteRecordRaw> = [
       name: '404'
     }
   }
-]
+];
 
 const router = createRouter({
   // 使用 history 路由
@@ -84,29 +84,29 @@ const router = createRouter({
   // 使用 hash 路由
   // history: createWebHashHistory(process.env.BASE_URL),
   routes
-})
+});
 
 // 全局路由守卫，前置钩子
 router.beforeEach((to, from, next) => {
   // 设置页面标题
   if (typeof to.meta.title !== 'undefined') {
-    document.title = to.meta.title
+    document.title = to.meta.title;
   } else {
-    document.title = 'work'
+    document.title = 'work';
   }
   // 用户登录判断
   if (to.meta.requireAuth) {
     // 判断是否登录
-    if (!(cache.get("token") && cache.get("user"))) {
+    if (!(cache.get('token') && cache.get('user'))) {
       // 跳转至登录页
       next({
         path: '/sign_in',
-        query: { redirect: to.fullPath },
-      })
+        query: { redirect: to.fullPath }
+      });
     }
   }
-  next()
-})
+  next();
+});
 
 // 导出路由实例
-export default router
+export default router;

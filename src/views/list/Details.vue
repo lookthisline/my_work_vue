@@ -1,16 +1,15 @@
-<template></template>
+<template>
+  <div />
+</template>
 
 <script>
 export default {
-  name: "用户详情页",
+  name: '用户详情页',
   props: {
     id: {
       type: Number,
-      default: 1,
-    },
-  },
+      default: 1
+    }
+  }
 };
 </script>
-
-<style>
-</style>

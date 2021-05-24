@@ -1,22 +1,24 @@
 <template>
-  <p>{{ message }} + {{ errorLink }}</p>
-  <p>测试</p>
+  <div>
+    <p>{{ message }} + {{ errorLink }}</p>
+    <p>测试</p>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "404",
+  name: '404',
   props: {
     errorLink: {
       type: String,
       required: false,
-      default: "",
-    },
+      default: ''
+    }
   },
   computed: {
     message() {
-      return "访问了一个不存在的页面：";
-    },
-  },
+      return '访问了一个不存在的页面：';
+    }
+  }
 };
 </script>
