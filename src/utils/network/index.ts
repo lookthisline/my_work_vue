@@ -113,8 +113,8 @@ instance.interceptors.response.use(
 );
 
 export default {
-  install: (Vue: App): void => {
-    Vue.config.globalProperties.$request = instance;
+  install: (app: App): void => {
+    app.config.globalProperties.$request = instance;
   },
   instance
 };

@@ -36,7 +36,7 @@ class Cache {
 export const cache = new Cache();
 
 export default {
-  install: (Vue: App): void => {
-    Vue.config.globalProperties.$cache = cache;
+  install: (app: App): void => {
+    app.config.globalProperties.$cache = cache;
   }
 };
